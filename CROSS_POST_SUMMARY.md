@@ -58,7 +58,7 @@ Post-quantum security adds negligible economic friction to institutional balance
 ### Post 8/8 (Reproducibility & Open Source)
 Full intellectual honesty: local KEM benchmarks prove mathematical and operational feasibility, while statutory legal finality (CPMI-IOSCO Principle 8) remains anchored in central bank operational frameworks outside EVM code.
 
-Every contract, test, benchmark dataset, hardware pre-flight spec, and single-command recording script (`scripts/record_demo_showcase.sh`) is open source:
+Every contract, test, benchmark dataset, hardware pre-flight spec, and single-command reproduction script (`scripts/record_demo_showcase.sh`) is open source:
 
 https://github.com/9ytshade/rayls-post-quantum-banking
 
@@ -85,4 +85,4 @@ In this investigation, I evaluated Rayls' post-quantum cryptographic architectur
 **Artifacts & Reproducibility:**
 - Technical Monograph & Hardware/Setup Guide: `POST_QUANTUM_BANKING_HNDL_RAYLS_DEEP_DIVE.md`
 - Visual Diagrams (Signature Gradient `#B49AFF -> #ECFB3E`): `assets/cover_image_post_quantum.png`, `assets/diagram_1_hndl_threat_model.png`, `assets/diagram_2_mlkem_zk_pipeline.png`, `assets/diagram_3_pq_empirical_benchmarks.png`
-- Automated Screen-Recordable Verification Script: `bash scripts/record_demo_showcase.sh` (`[STAGE 1/6]` Pre-flight Hardware/Tools -> `[STAGE 2/6]` Upstream Code Forensics -> `[STAGE 3/6]` Live Mainnet Telemetry -> `[STAGE 4/6]` Live Crypto Benchmarks -> `[STAGE 5/6]` Offline Foundry Invariants -> `[STAGE 6/6]` Live Fork Gas & Upstream Suite), or modularly via `bash scripts/run_research_stage.sh [1-6|all]`
+- Automated Empirical Demonstration Script: `bash scripts/record_demo_showcase.sh` (`[STAGE 1/6]` Pre-flight Hardware/Tools -> `[STAGE 2/6]` Upstream Code Forensics -> `[STAGE 3/6]` Live Mainnet Telemetry -> `[STAGE 4/6]` Live Crypto Benchmarks -> `[STAGE 5/6]` Offline Foundry Invariants -> `[STAGE 6/6]` Live Fork Gas & Upstream Suite), or modularly via `bash scripts/run_research_stage.sh [1-6|all]`

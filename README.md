@@ -23,9 +23,9 @@ Full copy-paste setup instructions are documented in Section 7 of [POST_QUANTUM_
 
 ---
 
-## Start-to-Finish Screen-Recording Guide & Checklist (`~50-60s`)
+## Start-to-Finish Reproduction Guide & Verification Checklist
 
-To record an uninterrupted, fully auditable live terminal proof starting from raw machine hardware checks up through live Mainnet probes and post-quantum verification:
+To execute an end-to-end, fully auditable verification run starting from raw machine hardware checks up through live Mainnet probes and post-quantum verification:
 
 ```bash
 # Inside WSL2 Ubuntu:
@@ -94,7 +94,8 @@ Week_8_Post_Quantum_Banking_HNDL/
 │   ├── RESEARCH_AND_IMPLEMENTATION_PLAN.md
 │   └── VOICEOVER_TTS_SCRIPT.md
 ├── scripts/
-│   ├── record_demo_showcase.sh              # Self-contained ~35-45s screen-recordable live showcase
+│   ├── record_demo_showcase.sh              # Self-contained end-to-end live demonstration showcase
+│   ├── run_research_stage.sh                # Modular research stage runner (Stages 1 through 6)
 │   ├── run_all_week8_demonstrations.sh      # Full end-to-end reproduction runner
 │   ├── benchmark_pq.go                      # Go N=500 ML-KEM-768 vs X25519 vs P-256 benchmark
 │   ├── mainnet_pq_telemetry.py              # 1,000-block Chain 72957 cadence & calldata economics probe

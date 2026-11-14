@@ -283,7 +283,7 @@ Executing on a live Rayls Public Chain (`Chain ID 72957`, pinned block `#14,548,
 
 ---
 
-## 7. Hardware Specs, Toolchain Setup & Start-to-Finish Screen-Recording Guide
+## 7. Hardware Specs, Toolchain Setup & Start-to-Finish Reproduction Guide
 
 Anyone in the community can independently reproduce every number in this report on a modest personal computer. Below are the exact device specs used for this audit, step-by-step setup instructions, and the full pre-flight checklist.
 
@@ -329,14 +329,14 @@ Anyone in the community can independently reproduce every number in this report 
    git -C ~/rayls_src/Enygma checkout a9b06c00cc4076b035c2d9afd5e2ca70b7eae194
    ```
 
-### 7.3 Start-to-Finish Pre-Flight & Screen-Recording Checklist
+### 7.3 Start-to-Finish Pre-Flight & Empirical Verification Checklist
 
-To verify authenticity from hardware specifications up through live Mainnet fork gas in a single continuous recording (or stage by stage):
+To execute an end-to-end, auditable verification run starting from raw machine hardware checks up through live Mainnet probes and post-quantum verification (or stage by stage):
 
 - [ ] **Stage 1 (`Hardware & Toolchain Pre-Flight`):** Display CPU model, RAM/Swap (`free -h`), disk space (`df -h .`), `go version`, `forge --version`, `python3 --version`, and pinned git SHA of `raylsnetwork/Enygma` (`@ a9b06c00`). *(Automated in `[STAGE 1/6]`)*
 - [ ] **Stage 2 (`Upstream Code Forensics & Invariant Audit`):** Inspect `Enygma.sol` line 532 strict 1,184-byte key enforcement, `manager.go` Fix M-11 defects 1, 2, and 3, and Baby Jubjub scalar field reduction modulo `curveP`. *(Automated in `[STAGE 2/6]`)*
 - [ ] **Stage 3 (`Live Mainnet 72957 RPC Telemetry`):** Query live `eth_chainId`, block tip `#14,548,825+`, zero finalized lag, gas price (`57.60 Gwei`), ConsensusRegistry (`21,930 B`), and FeeAggregatorProxy (`122 B`) bytecode. *(Automated in `[STAGE 3/6]`)*
-- [ ] **Stage 4 (`Live Cryptographic Benchmarks`):** Execute live $N=500$ benchmark run on camera demonstrating ML-KEM-768 encapsulation (`257.0 us`) outperforming X25519 (`350.9 us`) by 26.8%, plus Baby Jubjub reduction (`1.30 us`) and confirmation hash (`1.40 us`). *(Automated in `[STAGE 4/6]`)*
+- [ ] **Stage 4 (`Live Cryptographic Benchmarks`):** Execute live $N=500$ benchmark run demonstrating ML-KEM-768 encapsulation (`257.0 us`) outperforming X25519 (`350.9 us`) by 26.8%, plus Baby Jubjub reduction (`1.30 us`) and confirmation hash (`1.40 us`). *(Automated in `[STAGE 4/6]`)*
 - [ ] **Stage 5 (`Foundry Invariant Audit`):** Run `PQInvariantAudit.t.sol` (`8/8 PASS`, `256` fuzz runs) demonstrating key length enforcement, FIPS 203 implicit rejection mitigation, and leader directionality. *(Automated in `[STAGE 5/6]`)*
 - [ ] **Stage 6 (`Live Mainnet Fork Execution & Upstream Suite`):** Execute `PQMainnetFork.t.sol` (`3/3 PASS`) measuring `308,164` gas for on-chain view-key registration on live state, run upstream Go unit tests (`9/9 PASS`), and validate datasets via `scripts/verify_datasets.py` (`exit 0`). *(Automated in `[STAGE 6/6]`)*
 
