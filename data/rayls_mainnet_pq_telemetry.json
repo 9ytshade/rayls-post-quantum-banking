@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-11-14T14:33:52Z",
+  "rpc_endpoint": "https://mainnet-rpc.rayls.com",
+  "chain_id": 72957,
+  "pinned_canonical_block": 14548825,
+  "finalized_block": 14548825,
+  "pinned_block_hash": "0x18c0ca2f293473012a39a2d174be8c8ca583aa48bd3fb21989b7d213b93b7e47",
+  "sample_block_count": 1000,
+  "unbroken_parent_hash_links": "999/999",
+  "mean_block_cadence_seconds": 1.3413,
+  "median_block_cadence_seconds": 1,
+  "p95_block_cadence_seconds": 2,
+  "min_block_cadence_seconds": 0,
+  "max_block_cadence_seconds": 2,
+  "gas_price_wei": 57600000000,
+  "gas_price_gwei": 57.6,
+  "block_gas_limit": 500000000,
+  "genesis_system_contracts": {
+    "ConsensusRegistry": {
+      "address": "0x07E17e17e17e17e17e17e17e17e17e17e17e17e1",
+      "bytecode_size_bytes": 21929
+    },
+    "FeeAggregatorProxy": {
+      "address": "0x07E17e17e17e17e17e17e17e17e17e17e17e17e3",
+      "bytecode_size_bytes": 122
+    },
+    "DelegationPool": {
+      "address": "0x07e17e17e17e17e17e17e17e17E17e17e17e17e9",
+      "bytecode_size_bytes": 15790
+    }
+  },
+  "calldata_economics": {
+    "mlkem768_encapsulation_key_bytes": 1184,
+    "x25519_public_key_bytes": 32,
+    "eip2028_gas_per_nonzero_byte": 16,
+    "mlkem768_calldata_gas": 18944,
+    "x25519_calldata_gas": 512,
+    "calldata_gas_ratio": 37.0,
+    "mlkem768_min_total_tx_gas": 39944,
+    "x25519_min_total_tx_gas": 21512,
+    "mlkem768_cost_usdr_at_48gwei": 0.00230077,
+    "x25519_cost_usdr_at_48gwei": 0.00123909,
+    "delta_cost_usdr": 0.00106168,
+    "takeaway": "Registering an 1,184-byte post-quantum view key costs 18,944 calldata gas (39,944 gas total), amounting to $0.001917 USDr at 48 Gwei. Post-quantum key security costs less than two-tenths of a cent on Rayls."
+  }
+}

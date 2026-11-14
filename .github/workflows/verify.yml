@@ -1,0 +1,71 @@
+name: Verify Week 8 Post-Quantum Banking & HNDL Forensic Suite
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  foundry-pq-tests:
+    name: Foundry Post-Quantum Invariant Suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Week 8 Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Verify Toolchain
+        run: |
+          forge --version
+          cast --version
+
+      - name: Run Offline Foundry PQ & Counterfactual Tests
+        run: |
+          forge test --no-match-path "test/*Fork*" -vvv
+
+  upstream-enygma-pq-verification:
+    name: Upstream Rayls Enygma Go Agreement Tests (Pinned SHA)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Week 8 Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout Rayls Enygma (Pinned Commit)
+        uses: actions/checkout@v4
+        with:
+          repository: raylsnetwork/Enygma
+          ref: a9b06c00cc4076b035c2d9afd5e2ca70b7eae194
+          path: upstream/Enygma
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Run Upstream Enygma Agreement Tests
+        run: |
+          (cd upstream/Enygma/enygma_payments/go_client/agreement && go test -v -count=1 .)
+
+  validate-empirical-datasets:
+    name: Validate Telemetry, Benchmarks & JSON Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Week 8 Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate Data Packages & Reconcile Reported Metrics
+        run: |
+          python scripts/verify_datasets.py

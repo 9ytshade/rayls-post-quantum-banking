@@ -1,0 +1,107 @@
+{
+  "timestamp": "2026-11-15T15:24:10Z",
+  "environment": "WSL2 Ubuntu 24.04 LTS (Foundry forge 1.8.6, Solc 0.8.24)",
+  "offline_suite": {
+    "suite_name": "test/PQInvariantAudit.t.sol:PQInvariantAuditTest",
+    "total_tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "duration_ms": 245.40,
+    "tests": [
+      {
+        "name": "testFuzz_ArbitraryMalformedKeyLengthsRevert(uint16)",
+        "status": "PASS",
+        "fuzz_runs": 256,
+        "mean_gas": 84676,
+        "median_gas": 42706
+      },
+      {
+        "name": "test_Counterfactual_CRIT_PQ1_GuardOffAllowsTruncatedClassicalKey_GuardOnReverts",
+        "status": "PASS",
+        "gas_used": 294295
+      },
+      {
+        "name": "test_Counterfactual_CRIT_PQ2_GuardOffAllowsCorruptedCiphertext_GuardOnReverts",
+        "status": "PASS",
+        "gas_used": 1596330
+      },
+      {
+        "name": "test_Counterfactual_CRIT_PQ3_GuardOffAllowsLeaderRace_GuardOnEnforcesLowerId",
+        "status": "PASS",
+        "gas_used": 1596060
+      },
+      {
+        "name": "test_Counterfactual_CRIT_PQ4_GuardOffAllowsTruncatedCiphertext_GuardOnReverts",
+        "status": "PASS",
+        "gas_used": 1430972
+      },
+      {
+        "name": "test_HappyPath_RegisterMLKEM768Account",
+        "status": "PASS",
+        "gas_used": 411692
+      },
+      {
+        "name": "test_HappyPath_RelayerEmptyViewKey",
+        "status": "PASS",
+        "gas_used": 197194
+      },
+      {
+        "name": "test_SequentialAccountIdEnforcement",
+        "status": "PASS",
+        "gas_used": 346066
+      }
+    ]
+  },
+  "live_mainnet_fork_suite": {
+    "suite_name": "test/PQMainnetFork.t.sol:PQMainnetForkTest",
+    "rpc_url": "https://mainnet-rpc.rayls.com",
+    "chain_id": 72957,
+    "total_tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 7.96,
+    "tests": [
+      {
+        "name": "test_MainnetFork_ChainStateAndGenesisContractsPresent",
+        "status": "PASS",
+        "gas_used": 8711,
+        "verified_chain_id": 72957,
+        "verified_block_gas_limit": 500000000
+      },
+      {
+        "name": "test_MainnetFork_RegisterMLKEM768Account_GasMeasurement",
+        "status": "PASS",
+        "gas_used": 505586,
+        "inner_registration_gas": 308164
+      },
+      {
+        "name": "test_MainnetFork_PairwiseAgreement_LiveGas",
+        "status": "PASS",
+        "gas_used": 937004,
+        "inner_agreement_gas": 251561
+      }
+    ]
+  },
+  "upstream_agreement_suite": {
+    "repository": "raylsnetwork/Enygma",
+    "pinned_commit": "a9b06c00cc4076b035c2d9afd5e2ca70b7eae194",
+    "package": "enygma_payments/go_client/agreement",
+    "total_tests": 9,
+    "passed": 9,
+    "failed": 0,
+    "duration_seconds": 0.079,
+    "tests": [
+      "TestM11_LeaderMustHaveLowerID",
+      "TestM11_FollowerMustHaveHigherID",
+      "TestM11_HonestRoundTripAgrees",
+      "TestM11_CorruptedCiphertextRejectedNotCached",
+      "TestM11_MissingConfirmationIDRejected",
+      "TestM11_ConfirmationIDIsHexSHA256",
+      "TestM11_LoadPeerEncapsulationKey_RefusesMissingPeer",
+      "TestM11_LoadPeerEncapsulationKey_ReadsPublishedKey",
+      "TestM11_CiphertextFileMode0600"
+    ]
+  }
+}

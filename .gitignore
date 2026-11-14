@@ -1,0 +1,20 @@
+# Foundry build artifacts
+out/
+cache/
+cache_forge/
+broadcast/
+
+# Upstream clones or node dependencies (keep repo light; CI pins exact SHAs)
+node_modules/
+upstream/
+
+# Python cache
+__pycache__/
+*.pyc
+.venv/
+
+# OS & Editor artifacts
+.DS_Store
+Thumbs.db
+*.tmp
+.env

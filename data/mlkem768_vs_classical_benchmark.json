@@ -1,0 +1,136 @@
+{
+  "timestamp": "2026-11-15T15:09:25Z",
+  "environment": "WSL2 Ubuntu 24.04 LTS (x86_64)",
+  "cpu_model": "Intel(R) Core(TM) i3-3110M CPU @ 2.40GHz",
+  "logical_cpus": 4,
+  "go_version": "go1.27.4",
+  "sample_count_n": 500,
+  "primitives": [
+    {
+      "name": "ML-KEM-768",
+      "standard": "NIST FIPS 203 (Post-Quantum Lattice Module-LWE)",
+      "security_level": "NIST Security Category 3 (128-bit quantum, \u003e= AES-192 equivalent)",
+      "public_key_bytes": 1184,
+      "ciphertext_bytes": 1088,
+      "shared_secret_bytes": 32,
+      "keygen_latency": {
+        "count": 500,
+        "cold_first_us": 832.9,
+        "warm_median_us": 223.6,
+        "warm_mean_us": 276.99311823647287,
+        "warm_p95_us": 444.8,
+        "warm_min_us": 118.7,
+        "warm_max_us": 5405.699
+      },
+      "encap_latency": {
+        "count": 500,
+        "cold_first_us": 652.7,
+        "warm_median_us": 257,
+        "warm_mean_us": 349.93038677354673,
+        "warm_p95_us": 699.599,
+        "warm_min_us": 138,
+        "warm_max_us": 6781.998
+      },
+      "decap_latency": {
+        "count": 500,
+        "cold_first_us": 220.6,
+        "warm_median_us": 232,
+        "warm_mean_us": 273.68770941883736,
+        "warm_p95_us": 422.499,
+        "warm_min_us": 140.8,
+        "warm_max_us": 2896.6
+      },
+      "alloc_bytes_per_op": 17315
+    },
+    {
+      "name": "X25519",
+      "standard": "RFC 7748 (Classical Montgomery Curve Diffie-Hellman)",
+      "security_level": "128-bit Classical (0-bit Quantum against Shor's Algorithm)",
+      "public_key_bytes": 32,
+      "ciphertext_bytes": 32,
+      "shared_secret_bytes": 32,
+      "keygen_latency": {
+        "count": 500,
+        "cold_first_us": 203.1,
+        "warm_median_us": 172.3,
+        "warm_mean_us": 186.55427454909835,
+        "warm_p95_us": 280.4,
+        "warm_min_us": 102.8,
+        "warm_max_us": 3047.899
+      },
+      "encap_latency": {
+        "count": 500,
+        "cold_first_us": 361.6,
+        "warm_median_us": 350.9,
+        "warm_mean_us": 379.3049178356714,
+        "warm_p95_us": 589.5,
+        "warm_min_us": 204.9,
+        "warm_max_us": 5260.098
+      },
+      "decap_latency": {
+        "count": 500,
+        "cold_first_us": 171,
+        "warm_median_us": 169.1,
+        "warm_mean_us": 185.49154108216436,
+        "warm_p95_us": 274.499,
+        "warm_min_us": 102.399,
+        "warm_max_us": 2824.199
+      },
+      "alloc_bytes_per_op": 512
+    },
+    {
+      "name": "P-256 (secp256r1)",
+      "standard": "NIST SP 800-186 / FIPS 186-4 (Classical Weierstrass Curve)",
+      "security_level": "128-bit Classical (0-bit Quantum against Shor's Algorithm)",
+      "public_key_bytes": 65,
+      "ciphertext_bytes": 65,
+      "shared_secret_bytes": 32,
+      "keygen_latency": {
+        "count": 500,
+        "cold_first_us": 126.6,
+        "warm_median_us": 44.9,
+        "warm_mean_us": 51.54667735470942,
+        "warm_p95_us": 97.7,
+        "warm_min_us": 28.4,
+        "warm_max_us": 1253.099
+      },
+      "encap_latency": {
+        "count": 500,
+        "cold_first_us": 241.6,
+        "warm_median_us": 191.4,
+        "warm_mean_us": 227.80696793587168,
+        "warm_p95_us": 379.1,
+        "warm_min_us": 145.9,
+        "warm_max_us": 2805.8
+      },
+      "decap_latency": {
+        "count": 500,
+        "cold_first_us": 179.3,
+        "warm_median_us": 150.4,
+        "warm_mean_us": 176.8256092184369,
+        "warm_p95_us": 311.1,
+        "warm_min_us": 117.8,
+        "warm_max_us": 1114.099
+      },
+      "alloc_bytes_per_op": 1120
+    }
+  ],
+  "baby_jubjub_reduction_latency": {
+    "count": 500,
+    "cold_first_us": 96.1,
+    "warm_median_us": 1.3,
+    "warm_mean_us": 2.5156312625250488,
+    "warm_p95_us": 3.3,
+    "warm_min_us": 1.1,
+    "warm_max_us": 76.1
+  },
+  "confirmation_id_hash_latency": {
+    "count": 500,
+    "cold_first_us": 3.7,
+    "warm_median_us": 1.4,
+    "warm_mean_us": 2.6176352705410677,
+    "warm_p95_us": 2.6,
+    "warm_min_us": 1.3,
+    "warm_max_us": 274.3
+  }
+}
