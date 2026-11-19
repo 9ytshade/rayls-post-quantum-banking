@@ -159,7 +159,7 @@ def main() -> int:
         ("Public Key Size:", "1,184 Bytes (ML-KEM) vs 32 Bytes (X25519)"),
         ("Ciphertext Size:", "1,088 Bytes (ML-KEM) vs 32 Bytes (X25519)"),
         ("Calldata Gas Cost:", "18,944 gas (ML-KEM) vs 512 gas (X25519)"),
-        ("Net USD Cost (48 Gwei):", "$0.0019 USDr (less than 2/10ths of a cent)"),
+        ("Incremental Calldata Delta:", "18,432 gas (0.001062 RLS at 57.60 Gwei)"),
     ]
 
     r_y += 30

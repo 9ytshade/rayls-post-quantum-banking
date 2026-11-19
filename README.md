@@ -69,7 +69,7 @@ bash scripts/run_research_stage.sh all
   2. *Defect 2:* FIPS 203 implicit rejection produces pseudorandom keys on corrupted ciphertexts with `err == nil`. Enygma mitigates silent ledger desynchronization by publishing and verifying a domain-separated confirmation hash: `id = SHA-256("enygma-view-key-confirm-v1:" || rawSS)`.
   3. *Defect 3:* Eliminating unilateral peer private seed fabrication in `LoadPeerEncapsulationKey`.
 - **Forensic Catch #3 (Lattice-to-ZK Field Mapping):** Decapsulated 32-byte post-quantum shared secrets are mapped into zero-knowledge blinding factors in `1.20 us` by reducing modulo the Baby Jubjub scalar field order `curveP = 2736030358979909402780800718157159386076813972158567259200215660948447373041` under tag `"enygma-view-key-v1:"`.
-- **Forensic Catch #4 (EVM Calldata Economics at 48-57 Gwei):** Registering an 1,184-byte encapsulation key on Rayls Public Chain costs `18,944` calldata gas (`308,164` total execution gas on live fork), amounting to **`$0.0019 USDr`** (less than two-tenths of a cent). Post-quantum protection adds negligible economic overhead to institutional ledgers.
+- **Forensic Catch #4 (EVM Calldata Economics at 57.60 Gwei):** Registering an 1,184-byte encapsulation key on Rayls Public Chain costs `18,944` calldata gas (`308,164` total execution gas on live fork, or `0.01775 RLS` at 57.60 Gwei, with an incremental calldata delta of just `0.00106 RLS`). Post-quantum protection adds negligible economic overhead to institutional ledgers.
 
 ---
 

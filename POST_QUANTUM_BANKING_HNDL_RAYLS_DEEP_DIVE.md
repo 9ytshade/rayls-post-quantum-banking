@@ -10,7 +10,7 @@ In institutional capital markets, corporate debt, sovereign bonds (such as Brazi
 
 For regulated financial institutions bound by statutory secrecy laws (Brazil **Lei Complementar 105/2001**, **EU GDPR Articles 5/17**, and **US GLBA**), HNDL poses an immediate operational liability: **a 30-year bond transaction whose balance-sheet flow or client identity is decrypted in 2038 breaches banking secrecy retroactively.**
 
-To examine how modern institutional blockchains eliminate this vulnerability without violating real-time execution service-level agreements (SLAs), I evaluated Rayls' post-quantum cryptographic architecture across upstream open-source codebases and live **Rayls Public Chain Mainnet (`Chain ID 72957`)**:
+To examine how modern institutional blockchains neutralize this threat vector without violating real-time execution service-level agreements (SLAs), I evaluated Rayls' post-quantum cryptographic architecture across upstream open-source codebases and live **Rayls Public Chain Mainnet (`Chain ID 72957`)**:
 
 1. **NIST FIPS 203 ML-KEM-768 Integration (`agreement/manager.go`)**: Audited directly from [`raylsnetwork/Enygma`](https://github.com/raylsnetwork/Enygma) (`@ a9b06c00cc4076b035c2d9afd5e2ca70b7eae194`), benchmarking its pairwise post-quantum key agreement engine, `Fix M-11` security audit remediations, and lattice-to-ZK field reductions.
 2. **On-Chain View-Key Validation (`Enygma.sol`)**: Verified verbatim Solidity logic enforcing strict `1,184-byte` encapsulation key sizes on-chain, rejecting classical and malformed keys.
@@ -67,7 +67,7 @@ viewKeys[accountId] = viewKey;
 addressToAccountId[addr] = accountId;
 ```
 
-This on-chain guard guarantees that no bank can register a classical 32-byte (`X25519`) or 65-byte (`P-256`) key, eliminating mixed-security downgrade attacks at the EVM contract boundary.
+This on-chain guard ensures that no bank can register a classical 32-byte (`X25519`) or 65-byte (`P-256`) key, preventing mixed-security downgrade attacks at the EVM contract boundary.
 
 ### 2.2 Upstream Audit Remediation: `Fix M-11` in `agreement/manager.go`
 
@@ -154,7 +154,7 @@ By computing:
 
 $$\text{Scalar} = \text{SHA-256}(\text{"enygma-view-key-v1:"} \mathbin{\Vert} \text{rawSS}) \pmod{\text{curveP}}$$
 
-Enygma guarantees:
+This mapping establishes:
 1. **Mathematical Soundness:** The resulting scalar is uniformly distributed within $[0, \text{curveP} - 1]$, preventing modulo bias or curve point invalidation.
 2. **Domain Separation:** The confirmation tag uses tag `"enygma-view-key-confirm-v1:"`, ensuring the public verification hash can never leak or collide with the private ZK blinding scalar.
 
@@ -198,9 +198,9 @@ Running [test/PQInvariantAudit.t.sol](test/PQInvariantAudit.t.sol) in Foundry yi
 - **`CRIT-PQ2` (`1,596,330` gas):** Models FIPS 203 implicit rejection. When `enforceConfirmationTag = false`, an attacker submits corrupted ciphertext; the follower accepts a pseudorandom key, desynchronizing the ledger. Flipping Guard ON rejects the mismatch with `CorruptedCiphertextRejected()`.
 - **`CRIT-PQ3` (`1,596,060` gas):** When `enforceLeaderOrdering = false`, Bank 2 leads key agreement with Bank 1, causing a split cache. Flipping Guard ON enforces `leaderId < followerId`, reverting with `UnauthorizedLeaderDirection()`.
 - **`CRIT-PQ4` (`1,430,972` gas):** When `enforceCiphertextLength = false`, an attacker submits a 32-byte truncated ciphertext. Flipping Guard ON reverts with `InvalidCiphertextLength()`.
-- **Fuzz Invariant (`256` runs, $\mu = 90,338$ gas):** Proves that for all `keyLength != 0` and `keyLength != 1184`, the contract strictly reverts with `InvalidViewKeyLength()`.
+- **Fuzz Invariant (`256` runs, $\mu = 90,338$ gas):** Demonstrates across all 256 randomized inputs that any key length other than 0 and 1,184 strictly reverts with `InvalidViewKeyLength()`.
 
-**Plain-English Takeaway:** Using a dedicated smart-contract test harness, I proved that turning off Rayls' safety checks allows attackers to register weak classical keys or silently corrupt private communication, whereas turning the checks on reliably blocks every attack across hundreds of randomized test runs.
+**Plain-English Takeaway:** Using a dedicated smart-contract test harness, I demonstrated that turning off the safety checks allows registering weak classical keys or silently corrupting private communication, whereas turning the checks on reliably blocks every attack across hundreds of randomized test runs.
 
 ---
 
@@ -232,9 +232,9 @@ $$\text{ML-KEM-768 Calldata Gas} = 1,184 \times 16 = 18,944\text{ gas}$$
 $$\text{X25519 Calldata Gas} = 32 \times 16 = 512\text{ gas}$$
 
 Executing on a live Rayls Public Chain (`Chain ID 72957`, pinned block `#14,548,825`) fork at `57.60 Gwei` reveals:
-- **Live Account Registration Gas:** **`308,164` gas** ($0.001775$ USDr / $\$0.0018$).
-- **Live Pairwise Agreement Gas:** **`251,561` gas** ($0.001449$ USDr / $\$0.0014$).
-- **Economic Delta:** The additional calldata gas costs less than **$0.0011 USDr** per bank onboarding. Post-quantum immunity adds negligible overhead to institutional balance sheets.
+- **Live Account Registration Gas:** **`308,164` gas** (`0.017750 RLS`, or ~$0.0018 at illustrative $0.10 RLS baseline).
+- **Live Pairwise Agreement Gas:** **`251,561` gas** (`0.014490 RLS`, or ~$0.0014 at illustrative $0.10 RLS baseline).
+- **Economic Delta:** The additional calldata gas (`18,432` gas) costs just **`0.001062 RLS`** per bank onboarding. Post-quantum immunity adds negligible overhead to institutional balance sheets.
 
 ### 5.4 Verbatim Test Execution Summary
 
@@ -266,11 +266,11 @@ Executing on a live Rayls Public Chain (`Chain ID 72957`, pinned block `#14,548,
   - TestM11_CiphertextFileMode0600                             : PASS
 ```
 
-**Plain-English Takeaway:** Running 500 benchmark tests proved that Rayls' quantum-safe encryption is actually 26% faster at creating shared secrets than traditional cryptography, taking under 1 millisecond. Registering a quantum-safe key on the live Rayls blockchain costs less than a fifth of a cent.
+**Plain-English Takeaway:** Running 500 benchmark tests demonstrated that Rayls' quantum-safe encryption consistently encapsulates shared secrets faster than traditional cryptography, with a full handshake completing in under 0.6 milliseconds. Registering a quantum-safe key on the live Rayls blockchain costs less than 0.018 RLS.
 
 ---
 
-## 6. Four-Category Evidence Matrix & Epistemological Boundaries (What My Tests Do and Cannot Prove)
+## 6. Four-Category Evidence Matrix & Epistemological Boundaries (What My Tests Measure and Cannot Establish)
 
 | Evidence Category | Empirical Domain | What Was Directly Verified | Explicit Scope Boundary (What This Does NOT Prove) |
 | :--- | :--- | :--- | :--- |
@@ -373,4 +373,4 @@ bash scripts/run_all_week8_demonstrations.sh
 
 Full contracts, benchmark datasets, CI workflows, and source scripts: https://github.com/9ytshade/rayls-post-quantum-banking (CI runs: https://github.com/9ytshade/rayls-post-quantum-banking/actions).
 
-**Plain-English Takeaway:** Anyone with a standard laptop running free open-source tools can run one command to test their machine, connect to the live Rayls blockchain, and verify every quantum-security proof in under 45 seconds.
+**Plain-English Takeaway:** Anyone with a standard laptop running free open-source tools can run one command to test their machine, connect to the live Rayls blockchain, and verify every benchmark and invariant test in under two minutes.

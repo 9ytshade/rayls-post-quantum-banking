@@ -50,9 +50,9 @@ This feeds directly into Groth16 blinding factors with zero computational fricti
 An 1,184-byte view key is 37x larger than classical keys. Under EIP-2028 (16 gas per non-zero calldata byte), calldata costs `18,944 gas`.
 
 Forking live Rayls Mainnet (`72957`) revealed:
-- **On-chain View-Key Registration:** `308,164` total gas
-- **Pairwise Post-Quantum Agreement:** `251,561` total gas
-- **Net Cost at 57.6 Gwei:** Just **`$0.0019 USDr`** (less than a fifth of a cent)!
+- **On-chain View-Key Registration:** `308,164` total gas (`0.01775 RLS` at 57.6 Gwei)
+- **Pairwise Post-Quantum Agreement:** `251,561` total gas (`0.01449 RLS`)
+- **Net Calldata Delta:** Just `18,432` gas (`0.00106 RLS`), less than $0.0002!
 
 Post-quantum security adds negligible economic friction to institutional balance sheets.
 
@@ -81,7 +81,7 @@ In this investigation, I evaluated Rayls' post-quantum cryptographic architectur
 - **Counter-Intuitive Latency Finding ($N=500$):** Measured that ML-KEM-768 encapsulation (`195.9 us` warm median / `257.0 us` mean) consistently outperforms classical X25519 (`211.7 us` warm median / `283.5 us` mean; up to `161.0 us` vs `207.7 us` in initial runs), with a sub-millisecond total handshake (`552.5 us`), preserving banking SLAs.
 - **Upstream Audit Forensics (`Fix M-11` in `agreement/manager.go`):** Audited remediations for leader directionality (lower ID leads), constant-time mutual confirmation hash tags to prevent FIPS 203 implicit rejection desynchronization, and eliminating peer key fabrication.
 - **Lattice-to-ZK Baby Jubjub Field Reduction:** Proved post-quantum shared secrets reduce modulo `curveP` in **`1.20 us`** (`1.4 us` p95) under tag `"enygma-view-key-v1:"`.
-- **Foundry Invariant & Mainnet Fork Results:** 8/8 passing offline invariant tests (`CRIT-PQ1` to `CRIT-PQ4`, `256` fuzz runs), and 3/3 passing live Mainnet fork tests measuring **`308,164` gas** ($0.0019 USDr) for an 1,184-byte view-key registration and **`251,561` gas** for pairwise agreement (`verify_datasets.py` exit 0).
+- **Foundry Invariant & Mainnet Fork Results:** 8/8 passing offline invariant tests (`CRIT-PQ1` to `CRIT-PQ4`, `256` fuzz runs), and 3/3 passing live Mainnet fork tests measuring **`308,164` gas** (`0.01775 RLS`) for an 1,184-byte view-key registration and **`251,561` gas** for pairwise agreement (`verify_datasets.py` exit 0).
 
 **Artifacts & Reproducibility:**
 - Technical Monograph & Hardware/Setup Guide: `POST_QUANTUM_BANKING_HNDL_RAYLS_DEEP_DIVE.md`
