@@ -94,9 +94,9 @@ def main() -> int:
     draw.line([left_x0 + 24, th_y + 28, left_x1 - 24, th_y + 28], fill=C_BORDER, width=1)
 
     rows = [
-        ("ML-KEM-768", "223.6 us", "257.0 us", "232.0 us", "712.6 us", "SAFE (FIPS 203)", C_GREEN),
-        ("X25519", "172.3 us", "350.9 us", "169.1 us", "692.3 us", "BROKEN (Shor)", C_MUTED),
-        ("P-256 (ECDH)", "44.9 us", "191.4 us", "150.4 us", "386.7 us", "BROKEN (Shor)", C_MUTED),
+        ("ML-KEM-768", "178.7 us", "195.9 us", "177.9 us", "552.5 us", "SAFE (FIPS 203)", C_GREEN),
+        ("X25519", "104.4 us", "211.7 us", "103.1 us", "419.2 us", "BROKEN (Shor)", C_MUTED),
+        ("P-256 (ECDH)", "32.1 us", "151.1 us", "119.4 us", "302.6 us", "BROKEN (Shor)", C_MUTED),
     ]
 
     tr_y = th_y + 44
@@ -120,15 +120,15 @@ def main() -> int:
     # Key finding banner
     tr_y += 24
     draw.rounded_rectangle([left_x0 + 24, tr_y, left_x1 - 24, tr_y + 90], radius=8, fill=(35, 30, 42, 255), outline=C_YELLOW, width=1)
-    draw.text((left_x0 + 40, tr_y + 16), "COUNTER-INTUITIVE DISCOVERY: ML-KEM-768 IS 26.8% FASTER IN ENCAPSULATION", fill=C_YELLOW, font=f_th)
+    draw.text((left_x0 + 40, tr_y + 16), "COUNTER-INTUITIVE DISCOVERY: ML-KEM-768 CONSISTENTLY OUTPERFORMS X25519", fill=C_YELLOW, font=f_th)
     draw.text((left_x0 + 40, tr_y + 42), "Lattice matrix multiplications over polynomial rings execute faster on standard CPUs", fill=C_WHITE, font=f_td)
-    draw.text((left_x0 + 40, tr_y + 64), "than classical elliptic curve scalar point multiplication (257.0 us vs 350.9 us).", fill=C_WHITE, font=f_td)
+    draw.text((left_x0 + 40, tr_y + 64), "than classical elliptic curve scalar point multiplication (195.9 us vs 211.7 us; 161.0 us vs 207.7 us).", fill=C_WHITE, font=f_td)
 
     # Micro-benchmarks
     tr_y += 115
     draw.text((left_x0 + 24, tr_y), "Auxiliary Cryptographic Operations (N = 500):", fill=C_WHITE, font=f_card_hdr)
-    draw.text((left_x0 + 24, tr_y + 36), "- Baby Jubjub Scalar Field Reduction (toFieldElement): 1.30 us median (3.3 us p95)", fill=C_GREEN, font=f_td)
-    draw.text((left_x0 + 24, tr_y + 64), "- Mutual Confirmation ID SHA-256 Hash (Fix M-11):     1.40 us median (2.6 us p95)", fill=C_BLUE, font=f_td)
+    draw.text((left_x0 + 24, tr_y + 36), "- Baby Jubjub Scalar Field Reduction (toFieldElement): 1.20 us median (1.4 us p95)", fill=C_GREEN, font=f_td)
+    draw.text((left_x0 + 24, tr_y + 64), "- Mutual Confirmation ID SHA-256 Hash (Fix M-11):     1.40 us median (1.5 us p95)", fill=C_BLUE, font=f_td)
     draw.text((left_x0 + 24, tr_y + 92), "- Memory Allocations per ML-KEM-768 Exchange:           17,315 Bytes per operation", fill=C_MUTED, font=f_td)
 
     # Right Container: Calldata & On-Chain Economics

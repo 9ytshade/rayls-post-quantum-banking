@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-15T15:09:25Z",
+  "timestamp": "2026-11-19T03:51:18Z",
   "environment": "WSL2 Ubuntu 24.04 LTS (x86_64)",
   "cpu_model": "Intel(R) Core(TM) i3-3110M CPU @ 2.40GHz",
   "logical_cpus": 4,
@@ -15,30 +15,30 @@
       "shared_secret_bytes": 32,
       "keygen_latency": {
         "count": 500,
-        "cold_first_us": 832.9,
-        "warm_median_us": 223.6,
-        "warm_mean_us": 276.99311823647287,
-        "warm_p95_us": 444.8,
-        "warm_min_us": 118.7,
-        "warm_max_us": 5405.699
+        "cold_first_us": 396.201,
+        "warm_median_us": 178.701,
+        "warm_mean_us": 222.5259779559121,
+        "warm_p95_us": 336.501,
+        "warm_min_us": 118,
+        "warm_max_us": 5315.413
       },
       "encap_latency": {
         "count": 500,
-        "cold_first_us": 652.7,
-        "warm_median_us": 257,
-        "warm_mean_us": 349.93038677354673,
-        "warm_p95_us": 699.599,
-        "warm_min_us": 138,
-        "warm_max_us": 6781.998
+        "cold_first_us": 186.401,
+        "warm_median_us": 195.901,
+        "warm_mean_us": 257.04808617234465,
+        "warm_p95_us": 384.901,
+        "warm_min_us": 136.9,
+        "warm_max_us": 4702.211
       },
       "decap_latency": {
         "count": 500,
-        "cold_first_us": 220.6,
-        "warm_median_us": 232,
-        "warm_mean_us": 273.68770941883736,
-        "warm_p95_us": 422.499,
-        "warm_min_us": 140.8,
-        "warm_max_us": 2896.6
+        "cold_first_us": 145.8,
+        "warm_median_us": 177.9,
+        "warm_mean_us": 217.69688176352705,
+        "warm_p95_us": 324.901,
+        "warm_min_us": 140.001,
+        "warm_max_us": 2554.306
       },
       "alloc_bytes_per_op": 17315
     },
@@ -51,30 +51,30 @@
       "shared_secret_bytes": 32,
       "keygen_latency": {
         "count": 500,
-        "cold_first_us": 203.1,
-        "warm_median_us": 172.3,
-        "warm_mean_us": 186.55427454909835,
-        "warm_p95_us": 280.4,
-        "warm_min_us": 102.8,
-        "warm_max_us": 3047.899
+        "cold_first_us": 189.4,
+        "warm_median_us": 104.4,
+        "warm_mean_us": 160.0703507014028,
+        "warm_p95_us": 232.401,
+        "warm_min_us": 101.8,
+        "warm_max_us": 5265.812
       },
       "encap_latency": {
         "count": 500,
-        "cold_first_us": 361.6,
-        "warm_median_us": 350.9,
-        "warm_mean_us": 379.3049178356714,
-        "warm_p95_us": 589.5,
-        "warm_min_us": 204.9,
-        "warm_max_us": 5260.098
+        "cold_first_us": 349.101,
+        "warm_median_us": 211.701,
+        "warm_mean_us": 283.498985971944,
+        "warm_p95_us": 465.301,
+        "warm_min_us": 204.201,
+        "warm_max_us": 2731.907
       },
       "decap_latency": {
         "count": 500,
-        "cold_first_us": 171,
-        "warm_median_us": 169.1,
-        "warm_mean_us": 185.49154108216436,
-        "warm_p95_us": 274.499,
-        "warm_min_us": 102.399,
-        "warm_max_us": 2824.199
+        "cold_first_us": 165.6,
+        "warm_median_us": 103.1,
+        "warm_mean_us": 147.27069939879772,
+        "warm_p95_us": 216.201,
+        "warm_min_us": 102.101,
+        "warm_max_us": 4458.91
       },
       "alloc_bytes_per_op": 512
     },
@@ -87,50 +87,50 @@
       "shared_secret_bytes": 32,
       "keygen_latency": {
         "count": 500,
-        "cold_first_us": 126.6,
-        "warm_median_us": 44.9,
-        "warm_mean_us": 51.54667735470942,
-        "warm_p95_us": 97.7,
-        "warm_min_us": 28.4,
-        "warm_max_us": 1253.099
+        "cold_first_us": 154.2,
+        "warm_median_us": 32.1,
+        "warm_mean_us": 41.824955911823686,
+        "warm_p95_us": 69.701,
+        "warm_min_us": 28.2,
+        "warm_max_us": 335.701
       },
       "encap_latency": {
         "count": 500,
-        "cold_first_us": 241.6,
-        "warm_median_us": 191.4,
-        "warm_mean_us": 227.80696793587168,
-        "warm_p95_us": 379.1,
+        "cold_first_us": 287.801,
+        "warm_median_us": 151.101,
+        "warm_mean_us": 202.19625250501002,
+        "warm_p95_us": 329.301,
         "warm_min_us": 145.9,
-        "warm_max_us": 2805.8
+        "warm_max_us": 1347.003
       },
       "decap_latency": {
         "count": 500,
-        "cold_first_us": 179.3,
-        "warm_median_us": 150.4,
-        "warm_mean_us": 176.8256092184369,
-        "warm_p95_us": 311.1,
-        "warm_min_us": 117.8,
-        "warm_max_us": 1114.099
+        "cold_first_us": 228.4,
+        "warm_median_us": 119.4,
+        "warm_mean_us": 184.08699198396798,
+        "warm_p95_us": 250.601,
+        "warm_min_us": 117.6,
+        "warm_max_us": 4992.711
       },
       "alloc_bytes_per_op": 1120
     }
   ],
   "baby_jubjub_reduction_latency": {
     "count": 500,
-    "cold_first_us": 96.1,
-    "warm_median_us": 1.3,
-    "warm_mean_us": 2.5156312625250488,
-    "warm_p95_us": 3.3,
-    "warm_min_us": 1.1,
-    "warm_max_us": 76.1
+    "cold_first_us": 48.6,
+    "warm_median_us": 1.2,
+    "warm_mean_us": 1.4186412825651316,
+    "warm_p95_us": 1.4,
+    "warm_min_us": 1.2,
+    "warm_max_us": 35.1
   },
   "confirmation_id_hash_latency": {
     "count": 500,
-    "cold_first_us": 3.7,
+    "cold_first_us": 3.4,
     "warm_median_us": 1.4,
-    "warm_mean_us": 2.6176352705410677,
-    "warm_p95_us": 2.6,
+    "warm_mean_us": 1.5641302605210299,
+    "warm_p95_us": 1.5,
     "warm_min_us": 1.3,
-    "warm_max_us": 274.3
+    "warm_max_us": 13.5
   }
 }

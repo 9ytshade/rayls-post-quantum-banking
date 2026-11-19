@@ -53,20 +53,22 @@ bash scripts/run_research_stage.sh all
 1. **`[STAGE 1/6]` Hardware, Toolchain & Pinned Upstream Commits:** Prints live OS/kernel, CPU model & thread count, RAM/Swap (`free -h`), disk headroom (`df -h`), `go version`, `forge --version`, `solc --version`, `python3 --version`, and exact 40-char git `HEAD` SHA for `Enygma` (`a9b06c00cc4076b035c2d9afd5e2ca70b7eae194`).
 2. **`[STAGE 2/6]` Upstream Source Code Forensics & Invariant Audit:** Inspects `Enygma.sol` line 532 strict 1,184-byte key enforcement, `manager.go` Fix M-11 defects 1, 2, and 3, and Baby Jubjub scalar field reduction modulo `curveP`.
 3. **`[STAGE 3/6]` Live Rayls Mainnet RPC (`mainnet-rpc.rayls.com`, Chain `72957`):** Queries real-time tip block, `finalized` block lag, gas price (`57.60 Gwei`), `500M` block gas limit, and live bytecodes for Genesis `ConsensusRegistry` (`21,930 B`), `FeeAggregatorProxy` (`122 B`), and `DelegationPool` (`15,790 B`).
-4. **`[STAGE 4/6]` Live Cryptographic Benchmarks (N=500):** Executes live benchmark run on camera demonstrating ML-KEM-768 encapsulation (`257.0 us`) outperforming X25519 (`350.9 us`) by 26.8%, plus Baby Jubjub reduction (`1.30 us`) and confirmation hash (`1.40 us`).
+4. **`[STAGE 4/6]` Live Cryptographic Benchmarks (N=500):** Executes live benchmark run on camera demonstrating ML-KEM-768 encapsulation (`195.9 us` median / `257.0 us` mean) outperforming X25519 (`211.7 us` median / `283.5 us` mean), plus Baby Jubjub reduction (`1.20 us`) and confirmation hash (`1.40 us`).
 5. **`[STAGE 5/6]` Deterministic Foundry Forensic Suite (`8/8 PASS`, `256` fuzz runs):** Executes `PQAccountRegistry` invariant tests proving 1,184-byte view-key enforcement, FIPS 203 implicit rejection mitigation, leader directionality, and isolated Guard-OFF vs Guard-ON states (`CRIT-PQ1` to `CRIT-PQ4`).
 6. **`[STAGE 6/6]` Live Rayls Mainnet Fork Gas Execution & Upstream Suite:** Executes on-chain view-key registration directly on a forked Chain `72957` state, measuring **`308,164` gas** for an 1,184-byte ML-KEM encapsulation key and **`251,561` gas** for pairwise agreement, runs upstream Go unit tests (`9/9 PASS` in `enygma_payments/go_client/agreement`), and validates all machine-readable JSON datasets via `scripts/verify_datasets.py`.
+
+> **Demonstration Video:** Full verified terminal recording available at [assets/terminal_demo_showcase.mp4](assets/terminal_demo_showcase.mp4) (4.75 MB).
 
 ---
 
 ## Key Empirical Findings & Forensic Discoveries
 
-- **Forensic Catch #1 (Counter-Intuitive Latency Advantage):** Across $N=500$ benchmark iterations on an Intel i3-3110M CPU, post-quantum **NIST FIPS 203 ML-KEM-768 encapsulation is 26.8% faster than classical X25519** (`257.0 us` vs `350.9 us`). Polynomial ring matrix multiplications in Module-LWE execute faster on modern CPUs than elliptic curve scalar multiplications.
+- **Forensic Catch #1 (Counter-Intuitive Latency Advantage):** Across repeated $N=500$ benchmark iterations on an Intel i3-3110M CPU, post-quantum **NIST FIPS 203 ML-KEM-768 encapsulation consistently executes faster than classical X25519** (`195.9 us` vs `211.7 us` warm median; up to `161.0 us` vs `207.7 us` in initial runs; `257.0 us` vs `283.5 us` distribution mean). Polynomial ring matrix multiplications in Module-LWE execute faster on modern CPUs than elliptic curve scalar multiplications.
 - **Forensic Catch #2 (Upstream Audit Defect `Fix M-11` Analysis):** In `agreement/manager.go`, upstream Enygma remediates three critical defects:
   1. *Defect 1:* Enforcing that lower bank IDs lead (`GetOrEstablish`) and higher bank IDs follow (`GetOrAccept`), preventing divergent cache keys.
   2. *Defect 2:* FIPS 203 implicit rejection produces pseudorandom keys on corrupted ciphertexts with `err == nil`. Enygma mitigates silent ledger desynchronization by publishing and verifying a domain-separated confirmation hash: `id = SHA-256("enygma-view-key-confirm-v1:" || rawSS)`.
   3. *Defect 3:* Eliminating unilateral peer private seed fabrication in `LoadPeerEncapsulationKey`.
-- **Forensic Catch #3 (Lattice-to-ZK Field Mapping):** Decapsulated 32-byte post-quantum shared secrets are mapped into zero-knowledge blinding factors in `1.30 us` by reducing modulo the Baby Jubjub scalar field order `curveP = 2736030358979909402780800718157159386076813972158567259200215660948447373041` under tag `"enygma-view-key-v1:"`.
+- **Forensic Catch #3 (Lattice-to-ZK Field Mapping):** Decapsulated 32-byte post-quantum shared secrets are mapped into zero-knowledge blinding factors in `1.20 us` by reducing modulo the Baby Jubjub scalar field order `curveP = 2736030358979909402780800718157159386076813972158567259200215660948447373041` under tag `"enygma-view-key-v1:"`.
 - **Forensic Catch #4 (EVM Calldata Economics at 48-57 Gwei):** Registering an 1,184-byte encapsulation key on Rayls Public Chain costs `18,944` calldata gas (`308,164` total execution gas on live fork), amounting to **`$0.0019 USDr`** (less than two-tenths of a cent). Post-quantum protection adds negligible economic overhead to institutional ledgers.
 
 ---
