@@ -374,3 +374,75 @@ bash scripts/run_all_week8_demonstrations.sh
 Full contracts, benchmark datasets, CI workflows, and source scripts: https://github.com/9ytshade/rayls-post-quantum-banking (CI runs: https://github.com/9ytshade/rayls-post-quantum-banking/actions).
 
 **Plain-English Takeaway:** Anyone with a standard laptop running free open-source tools can run one command to test their machine, connect to the live Rayls blockchain, and verify every benchmark and invariant test in under two minutes.
+
+---
+
+## 8. Frequently Asked Questions (FAQ)
+
+### Q1: Why can't financial institutions wait until quantum computers exist before migrating their blockchain cryptography?
+In commercial and sovereign banking, financial instruments carry long operational lifecycles: 10-year treasury notes, 20-year corporate debentures, and 30-year syndicated credit agreements. Under the **Harvest-Now-Decrypt-Later (HNDL)** attack vector, state actors and adversaries intercept and store encrypted blockchain payloads today. When cryptanalytically relevant quantum computers emerge in the 2030s, they will run Shor's algorithm to compute the discrete logarithms of classical public keys (`X25519` and `secp256k1`). Decrypting private transaction calldata recorded today will retroactively breach statutory secrecy laws (Brazil Lei Complementar 105/2001, EU GDPR, and US GLBA). Therefore, post-quantum key encapsulation must be implemented at transaction issuance, not decades later.
+
+### Q2: Why did Rayls select NIST FIPS 203 ML-KEM-768 instead of ML-KEM-512 or ML-KEM-1024?
+NIST FIPS 203 defines three security categories for Module-LWE:
+- **ML-KEM-512 (Category 1):** Roughly equivalent to AES-128. While compact (800-byte public key), it provides less security margin against future algorithmic improvements in lattice sieving.
+- **ML-KEM-768 (Category 3):** Roughly equivalent to AES-192 (128 bits of post-quantum security). It represents the international banking industry standard for enterprise-grade cryptography, balancing high security margins against manageable calldata overhead (1,184-byte public key, 1,088-byte ciphertext).
+- **ML-KEM-1024 (Category 5):** Roughly equivalent to AES-256, but introduces larger payload dimensions (1,568-byte public key, 1,568-byte ciphertext), incurring higher on-chain EVM calldata gas fees without providing necessary incremental defense for financial message confidentiality.
+
+### Q3: Does registering an 1,184-byte post-quantum key cause network congestion or cost prohibitive gas?
+No. Under standard EVM rules (EIP-2028), each non-zero byte of calldata costs 16 gas. On Rayls Public Chain (`Chain ID 72957`), an 1,184-byte view-key registration requires 18,944 calldata gas, and executes at `308,164` total gas on a live Mainnet fork. At a baseline network gas price of `57.60 Gwei`, the transaction consumes `0.017750 RLS`. Compared to a classical 32-byte key (512 calldata gas), the incremental post-quantum delta is just `18,432 gas` (`0.001062 RLS`). Because view-key registration occurs once per institutional onboarding rather than on every payment transaction, its impact on block capacity and gas budgets is negligible.
+
+### Q4: Why does ML-KEM-768 encapsulation execute faster than classical X25519 on a standard CPU?
+While lattice cryptography requires larger keys, its mathematical operations are fundamentally simpler than elliptic curve arithmetic. ML-KEM encapsulation operates over polynomial rings modulo a small 12-bit prime ($q = 3329$), executing via Number Theoretic Transform (NTT) matrix-vector additions and modular reductions. In contrast, classical `X25519` requires 256-bit multi-precision integer multiplications, modular inversions, and point doublings across Montgomery curves. On an Intel Core i3 CPU, ML-KEM-768 warm encapsulation executes in `195.9 us` (with initial warm runs at `161.0 us`), consistently outperforming X25519 (`211.7 us` warm median; `207.7 us` in initial runs).
+
+### Q5: What is "implicit rejection" under NIST FIPS 203, and why did Rayls implement Fix M-11 in Enygma?
+Under NIST FIPS 203, the decapsulation algorithm (`mlkem768.Decapsulate`) implements the Fujisaki-Okamoto transform. When presented with a corrupted, tampered, or malformed ciphertext, it does not return an error (`err == nil`); instead, it deterministically computes a pseudorandom shared secret derived from the recipient's private key and ciphertext hash. Without mitigation, Bank B decapsulating a corrupted message would cache an uncoordinated key, silently desynchronizing from Bank A and causing subsequent zero-knowledge settlements to fail. Upstream Enygma resolves this via `Fix M-11 Defect 2`, requiring the leader to publish a SHA-256 confirmation hash (`id = Hash(rawSS)`), which the follower verifies in constant time before committing the secret to its cache.
+
+### Q6: Does cryptographic post-quantum defense on a blockchain guarantee statutory legal finality?
+No. Cryptographic state transitions provide technical finality and payload confidentiality. Under international regulatory standards established by CPMI-IOSCO (Principle 8: Settlement Finality), statutory legal finality requires a clear legal framework defining the exact point at which transactions become irrevocable and unconditional under applicable insolvency and central bank operating regulations. Technical immutability in an EVM runtime must be accompanied by bilateral master netting agreements and operational rulebooks to achieve judicial legal finality.
+
+---
+
+## 9. Primary Sources & Authoritative References
+
+### A. Upstream Code Repositories & Forensic Commits
+1. **Rayls Network Core Enygma Repository:**  
+   `raylsnetwork/Enygma` @ commit [`a9b06c00cc4076b035c2d9afd5e2ca70b7eae194`](https://github.com/raylsnetwork/Enygma/tree/a9b06c00cc4076b035c2d9afd5e2ca70b7eae194)  
+   - Solidity Contract: `enygma_payments/contracts/enygma/contracts/Enygma.sol` (Line 526-535, strict 1,184-byte view-key validation).  
+   - Go Agreement Engine: `enygma_payments/go_client/agreement/manager.go` (Lines 120-155, 215-219, 297-313, Fix M-11 defects 1, 2, and 3).  
+   - Agreement Test Suite: `enygma_payments/go_client/agreement/manager_test.go` (9 passing unit tests).
+2. **Official Go ML-KEM Package:**  
+   Valsorda, F., *ML-KEM-768 Implementation (NIST FIPS 203)*, Go Standard Library Cryptography Proposal, `filippo.io/mlkem768`.
+3. **Classical Cryptographic Baselines:**  
+   Go Standard Library Cryptographic Primitives: `crypto/ecdh` (RFC 7748 X25519) and `crypto/elliptic` (NIST SP 800-186 P-256).
+
+### B. Blockchain Telemetry & Network Infrastructure
+4. **Rayls Public Chain Mainnet Endpoint:**  
+   RPC URL: `https://mainnet-rpc.rayls.com` | Chain ID: `72957` | Explorer: [https://explorer.rayls.com](https://explorer.rayls.com).  
+   - Pinned Canonical Sample Block: `#14,548,825` (1,000-block consecutive scan, 999 unbroken parent-hash links, 500,000,000 gas limit).  
+   - Genesis Consensus Registry: `0x07E17e17e17e17e17e17e17e17e17e17e17e17e1` (21,930 bytes).  
+   - Genesis Fee Aggregator Proxy: `0x07e17E17E17E17E17E17e17E17e17e17e17e17E3` (123 bytes).  
+   - Genesis Delegation Pool: `0x07E17E17e17e17e17E17e17e17e17e17E17e17E5` (15,790 bytes).
+
+### C. Cryptographic & Technical Standards
+5. **NIST FIPS 203:**  
+   National Institute of Standards and Technology (NIST), *Module-Lattice-Based Key-Encapsulation Mechanism Standard*, Federal Information Processing Standards Publication 203, August 13, 2024. [DOI: 10.6028/NIST.FIPS.203](https://doi.org/10.6028/NIST.FIPS.203).
+6. **IETF RFC 7748:**  
+   Langley, A., Hamburg, M., and Turner, S., *Elliptic Curves for Security*, Internet Engineering Task Force (IETF) RFC 7748, January 2016. [DOI: 10.17487/RFC7748](https://doi.org/10.17487/RFC7748).
+7. **NIST Special Publication 800-186:**  
+   Barker, E. and Roginsky, A., *Recommendations for Discrete Logarithm-Based Cryptography: Elliptic Curve Domain Parameters*, NIST SP 800-186, February 2023. [DOI: 10.6028/NIST.SP.800-186](https://doi.org/10.6028/NIST.SP.800-186).
+8. **Ethereum Improvement Proposal (EIP) 2028:**  
+   Buterin, V., et al., *EIP-2028: Transaction Data Gas Cost Reduction*, Ethereum Improvement Proposals, no. 2028, May 2019. (Decreasing non-zero calldata byte gas from 68 to 16).
+9. **Shor's Algorithm:**  
+   Shor, P. W., *Algorithms for Quantum Computation: Discrete Logarithms and Factoring*, Proceedings 35th Annual Symposium on Foundations of Computer Science (FOCS), IEEE, 1994, pp. 124-134. [DOI: 10.1109/SFCS.1994.365700](https://doi.org/10.1109/SFCS.1994.365700).
+
+### D. Banking Regulations & Institutional Market Frameworks
+10. **CPMI-IOSCO Principles for Financial Market Infrastructures (PFMI):**  
+    Committee on Payments and Market Infrastructures and International Organization of Securities Commissions, *Principles for Financial Market Infrastructures*, Principle 8: Settlement Finality, Bank for International Settlements (BIS), April 2012. [BIS PFMI Report](https://www.bis.org/cpmi/publ/d101a.pdf).
+11. **Banco Central do Brasil (BCB) - Drex Pilot Specifications:**  
+    Banco Central do Brasil, *Diretrizes do Piloto Drex para Transações Financeiras com Títulos Públicos Federais (TPFt) e Depósitos Tokenizados*, Departamento de Operações Bancárias e de Sistema de Pagamentos (DEBAN), 2023-2024. [BCB Drex Portal](https://www.bcb.gov.br/estabilidadefinanceira/drex).
+12. **Brazil Statutory Banking Secrecy Law:**  
+    Presidência da República do Brasil, *Lei Complementar Nº 105, de 10 de Janeiro de 2001: Dispõe sobre o sigilo das operações de instituições financeiras e dá outras providências*, Diário Oficial da União, Brasília, 2001.
+13. **European Union General Data Protection Regulation (GDPR):**  
+    European Parliament and Council of the European Union, *Regulation (EU) 2016/679 on the Protection of Natural Persons with Regard to the Processing of Personal Data*, Article 5 (Integrity and Confidentiality) and Article 17 (Right to Erasure), Official Journal of the European Union, 2016.
+14. **United States Gramm-Leach-Bliley Act (GLBA):**  
+    United States Congress, *Gramm-Leach-Bliley Financial Services Modernization Act of 1999*, Public Law 106-102, Title V: Privacy and Safeguarding of Nonpublic Personal Financial Information, 15 U.S.C. § 6801 et seq.

@@ -78,7 +78,7 @@ bash scripts/run_research_stage.sh all
 ```text
 Week_8_Post_Quantum_Banking_HNDL/
 ├── .github/workflows/verify.yml             # CI verification workflow (Foundry + Upstream Go + Datasets)
-├── POST_QUANTUM_BANKING_HNDL_RAYLS_DEEP_DIVE.md # Full technical monograph, code blocks & boundary matrix
+├── POST_QUANTUM_BANKING_HNDL_RAYLS_DEEP_DIVE.md # Full technical monograph, code blocks, FAQ & citations
 ├── CROSS_POST_SUMMARY.md                    # Twitter / X 8-post thread & Discord submission package
 ├── README.md
 ├── assets/                                  # 1600x900 Light-Theme Rayls visuals (#B49AFF -> #ECFB3E)
